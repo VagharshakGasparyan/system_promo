@@ -1,39 +1,32 @@
 # system_promo
 ```
-npx express-generator --view=ejs
-```
-```
 npm i
 ```
 - Additional packages
 ```
-npm i express-ejs-layouts
-npm i mysql
-npm i sync-mysql
-npm i bcrypt
-npm i mysql2
+npm i express
+npm i express-fileupload
+npm i cors
+npm i dotenv
+npm i http-errors
 npm i express-session
-npm i express-session
-npm i winston
 npm i moment
 npm i node-cron
-npm i jsonwebtoken
-npm i joi
+npm i moment
+npm i winston
+npm i pg
+npm i nodemon
 ```
 - Migrations
 ```
-npm
+node com migrate
 ```
 - Seeders
 ```
-npx sequelize-cli seed:generate --name products-seeder
-npx sequelize-cli db:seed:all
-sequelize db:seed --seed 20231228092258-users-seeder.js
-npx sequelize-cli db:seed:undo
-npx sequelize-cli db:seed:undo --seed name-of-seed-as-in-data
-npx sequelize-cli db:seed:undo:all
+node com seed
 ```
-group auth middleware
-translate
-auth
-socket
+For the developer version type
+``
+nodemon start
+``
+to starting server.
