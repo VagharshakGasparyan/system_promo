@@ -23,6 +23,7 @@ class AdminController {
             let sendData = {data: {users: result.rows}, page, perPage, errors: {}};
             return res.send(sendData);
         }catch (e) {
+            res.status(422);
             return res.send({errors: e.message});
         }
     }
@@ -44,6 +45,7 @@ class AdminController {
             let sendData = {data: {promo: result.rows}, page, perPage, errors: {}};
             return res.send(sendData);
         }catch (e) {
+            res.status(422);
             return res.send({errors: e.message});
         }
     }
@@ -64,6 +66,7 @@ class AdminController {
             let sendData = {data: {info: 'The PromoCode created successfully.'}, errors: {}};
             return res.send(sendData);
         }catch (e) {
+            res.status(422);
             return res.send({errors: e.message});
         }
     }
@@ -78,6 +81,7 @@ class AdminController {
             let sendData = {data: {info: 'The PromoCode deleted successfully.'}, errors: {}};
             return res.send(sendData);
         }catch (e) {
+            res.status(422);
             return res.send({errors: e.message});
         }
 
@@ -89,13 +93,30 @@ class AdminController {
     {
         try{
             let {email, promo_id} = req.body;
+
+            let q = `SELECT COUNT(*) FROM promo_email WHERE promo_id = $1;`;
+            let result = await DB({text: q, values: [promo_id]});
+            const count = parseInt(result.rows[0].count);
+            q = `SELECT p_limit FROM promo WHERE id = $1;`;
+            result = await DB({text: q, values: [promo_id]});
+            const p_limit = result.rows[0]["p_limit"];
+            // console.log("COUNT=", count, "p_limit=", p_limit);
+            const limitMessage = 'The promo code limit has been reached';
+            let sendData = {data: {}, errors: limitMessage};
+            //check limit
+            if(count >= p_limit){
+                res.status(422);
+                return res.send(sendData);
+            }
             const values = [promo_id, email];
-            const q = `INSERT INTO promo_email (promo_id, user_email)
+            q = `INSERT INTO promo_email (promo_id, user_email)
                   VALUES ($1, $2);`;
             await DB({text: q, values});
-            let sendData = {data: {info: 'Success.'}, errors: {}};
+
+            sendData = {data: {info: 'Success.'}, errors: {}};
             return res.send(sendData);
         }catch (e) {
+            res.status(422);
             return res.send({errors: e.message});
         }
     }
@@ -111,6 +132,7 @@ class AdminController {
             let sendData = {data: {info: 'Success.'}, errors: {}};
             return res.send(sendData);
         }catch (e) {
+            res.status(422);
             return res.send({errors: e.message});
         }
     }
