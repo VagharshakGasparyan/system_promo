@@ -13,7 +13,7 @@ function DB(q) {
         try {
             await client.connect();
             const result = await client.query(q);
-            console.log(result);
+            // console.log(result);
             await client.end();
             resolve(result);
         } catch (err) {

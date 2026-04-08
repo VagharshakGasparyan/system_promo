@@ -12,6 +12,8 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+const fileUpload = require("express-fileupload");
+app.use(fileUpload({limits: { fileSize: 50 * 1024 * 1024 }}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
